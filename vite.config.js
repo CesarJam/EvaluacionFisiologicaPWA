@@ -18,7 +18,7 @@ export default defineConfig({
         orientation: 'portrait',
         icons: [
           {
-            src: '/icons.svg', // Asegúrate de tener este archivo o usa un .png de 192x192
+            src: 'logopwa.png', // Asegúrate de tener este archivo o usa un .png de 192x192
             sizes: '192x192',
             type: 'image/svg+xml',
             purpose: 'any maskable'
