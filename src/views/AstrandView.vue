@@ -108,6 +108,7 @@
           <thead class="bg-gray-800 text-gray-200">
             <tr>
               <th class="p-4 border-b border-gray-700">ID</th>
+              <th class="p-4 border-b border-gray-700">Asesorado</th>
               <th class="p-4 border-b border-gray-700">Fecha</th>
               <th class="p-4 border-b border-gray-700 text-center">Edad</th>
               <th class="p-4 border-b border-gray-700 text-center">Resultado</th>
@@ -117,6 +118,7 @@
           <tbody>
             <tr v-for="item in historial" :key="item.id" class="border-b border-gray-800 hover:bg-gray-800 transition-colors">
               <td class="p-4 font-mono text-gray-500">#{{ item.id }}</td>
+              <td class="p-4 text-white font-medium uppercase">{{ item.nombre }}</td>
               <td class="p-4 whitespace-nowrap">{{ new Date(item.fecha).toLocaleString() }}</td>
               <td class="p-4 text-center">{{ item.parametros.edad }} años</td>
               <td class="p-4 text-center text-yellow-400 font-bold">{{ item.resultado }} lat/min</td>
@@ -148,6 +150,8 @@
 import { ref, computed, onMounted } from 'vue'
 import { guardarEvaluacion, obtenerHistorial, eliminarEvaluacion } from '../db/sqlite.js'
 import ConfirmModal from '../components/ConfirmModal.vue'
+
+const props = defineProps(['nombre'])
 
 // --- LÓGICA DEL MODAL DE ELIMINACIÓN ---
 const mostrarModal = ref(false)
@@ -211,7 +215,7 @@ const guardarDatos = async () => {
   }
   
   try {
-    await guardarEvaluacion('Astrand', parametros, fcMax.value)
+    await guardarEvaluacion('Astrand', props.nombre || 'Sin nombre', parametros, fcMax.value)
     await cargarHistorial() // <-- Recargamos la tabla automáticamente después de guardar
     //alert('¡Evaluación guardada en SQLite con éxito!')
   } catch (error) {
@@ -221,7 +225,7 @@ const guardarDatos = async () => {
 }
 
 const compartirWhatsApp = () => {
-  const mensaje = `*LIONESSS ACADEMY* 🦁\nEvaluación Fisiológica (Astrand)\n\n*Parámetros:*\n- Edad: ${edad.value} años\n- FC Máxima Teórica: ${fcReferencia.value} lat/min\n\n*Resultado:*\n🎯 *FC Máxima: ${fcMax.value} lat/min*\n\nCreado y desarrollado por CesarJam94`;
+  const mensaje = `*LIONSSS ACADEMY* 🦁\n👤 *Asesorado: ${props.nombre || 'N/A'}*\n\nEvaluación Fisiológica (Astrand)\n\n*Parámetros:*\n- Edad: ${edad.value} años\n- FC Máxima Teórica: ${fcReferencia.value} lat/min\n\n*Resultado:*\n🎯 *FC Máxima: ${fcMax.value} lat/min*\n\nCreado y desarrollado por CesarJam94`;
   const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(mensaje)}`;
   window.open(url, '_blank');
 }
@@ -233,11 +237,12 @@ const compartirHistorialWhatsApp = () => {
     return;
   }
 
-  let mensaje = `*LIONESSS ACADEMY* 🦁\n📋 *Historial de Evaluaciones (Astrand)*\n\n`;
+  let mensaje = `*LIONSSS ACADEMY* 🦁\n📋 *Historial de Evaluaciones (Astrand)*\n\n`;
   
   // Recorremos el historial y armamos el texto
   historial.value.forEach((item, index) => {
     mensaje += `*Evaluación #${index + 1}*\n`;
+    mensaje += `👤 *Asesorado: ${item.nombre || 'Sin nombre'}*\n`;
     mensaje += `📅 Fecha: ${new Date(item.fecha).toLocaleString()}\n`;
     mensaje += `👤 Edad: ${item.parametros.edad} años\n`;
     mensaje += `🎯 FC Máx: ${item.resultado} lat/min\n`;

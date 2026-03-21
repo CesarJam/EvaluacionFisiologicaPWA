@@ -104,6 +104,7 @@
           <thead class="bg-gray-800 text-gray-200">
             <tr>
               <th class="p-4 border-b border-gray-700">ID</th>
+              <th class="p-4 border-b border-gray-700">Asesorado</th>
               <th class="p-4 border-b border-gray-700">Fecha</th>
               <th class="p-4 border-b border-gray-700 text-center">FC Max</th>
               <th class="p-4 border-b border-gray-700 text-center">% Intensidad</th>
@@ -114,6 +115,7 @@
           <tbody>
             <tr v-for="item in historial" :key="item.id" class="border-b border-gray-800 hover:bg-gray-800 transition-colors">
               <td class="p-4 font-mono text-gray-500">#{{ item.id }}</td>
+              <td class="p-4 text-white font-medium uppercase">{{ item.nombre }}</td>
               <td class="p-4 whitespace-nowrap">{{ new Date(item.fecha).toLocaleString() }}</td>
               <td class="p-4 text-center">{{ item.parametros.fcMax }}</td>
               <td class="p-4 text-center">{{ item.parametros.intensidad * 100 }}%</td>
@@ -146,6 +148,8 @@
 import { ref, computed, onMounted } from 'vue'
 import { guardarEvaluacion, obtenerHistorial, eliminarEvaluacion } from '../db/sqlite.js'
 import ConfirmModal from '../components/ConfirmModal.vue'
+
+const props = defineProps(['nombre'])
 
 // --- LÓGICA DEL MODAL ---
 const mostrarModal = ref(false)
@@ -207,7 +211,7 @@ const guardarDatos = async () => {
   }
   
   try {
-    await guardarEvaluacion('FCTrabajo', parametros, fcTrabajo.value)
+    await guardarEvaluacion('FCTrabajo', props.nombre || 'Sin nombre', parametros, fcTrabajo.value)
     await cargarHistorial() 
   } catch (error) {
     console.error('Error al guardar:', error)
@@ -217,7 +221,7 @@ const guardarDatos = async () => {
 
 // --- LÓGICA DE WHATSAPP ---
 const compartirWhatsApp = () => {
-  const mensaje = `*LIONESSS ACADEMY* 🦁\nEvaluación Fisiológica (FC w de trabajo)\n\n*Parámetros:*\n- FC Máxima: ${fcMax.value} lat/min\n- Intensidad: ${intensidad.value * 100}%\n\n*Resultado:*\n🎯 *FC Trabajo: ${fcTrabajo.value} lat/min*\n\nCreado y desarrollado por CesarJam94`;
+  const mensaje = `*LIONSSS ACADEMY* 🦁\n👤 *Asesorado: ${props.nombre || 'N/A'}*\n\nEvaluación Fisiológica (FC w de trabajo)\n\n*Parámetros:*\n- FC Máxima: ${fcMax.value} lat/min\n- Intensidad: ${intensidad.value * 100}%\n\n*Resultado:*\n🎯 *FC Trabajo: ${fcTrabajo.value} lat/min*\n\nCreado y desarrollado por CesarJam94`;
   const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(mensaje)}`;
   window.open(url, '_blank');
 }
@@ -228,10 +232,11 @@ const compartirHistorialWhatsApp = () => {
     return;
   }
 
-  let mensaje = `*LIONESSS ACADEMY* 🦁\n📋 *Historial de Evaluaciones (FC w de trabajo)*\n\n`;
+  let mensaje = `*LIONSSS ACADEMY* 🦁\n📋 *Historial de Evaluaciones (FC w de trabajo)*\n\n`;
   
   historial.value.forEach((item, index) => {
     mensaje += `*Evaluación #${index + 1}*\n`;
+    mensaje += `👤 *Asesorado: ${item.nombre || 'Sin nombre'}*\n`;
     mensaje += `📅 Fecha: ${new Date(item.fecha).toLocaleString()}\n`;
     mensaje += `❤️ FC Máx: ${item.parametros.fcMax} lat/min\n`;
     mensaje += `⚡ Intensidad: ${item.parametros.intensidad * 100}%\n`;

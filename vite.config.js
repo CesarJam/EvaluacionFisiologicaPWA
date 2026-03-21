@@ -9,8 +9,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'logo.png', 'sql-wasm.wasm'],
       manifest: {
-        name: 'LIONESSS ACADEMY - Evaluacion Fisiologica',
-        short_name: 'Lionesss Fit - - Evaluacion Fisiologica',
+        name: 'LIONSSS ACADEMY - Evaluacion Fisiologica',
+        short_name: 'Lionsss Fit - - Evaluacion Fisiologica',
         description: 'Calculadora de FC Max y Vo2 para Ergoespirometría',
         theme_color: '#000000', // Color de la barra de estado en el móvil
         background_color: '#000000', // Color de fondo al abrir la app

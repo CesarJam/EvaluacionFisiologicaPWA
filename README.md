@@ -1,4 +1,4 @@
-# 🦁 LIONESSS ACADEMY - Evaluación Fisiológica (PWA)
+# 🦁 LIONSSS ACADEMY - Evaluación Fisiológica (PWA)
 
 Esta es una **Aplicación Web Progresiva (PWA)** diseñada para especialistas en fisiología del ejercicio y entrenadores. Permite realizar cálculos precisos de frecuencia cardíaca máxima y zonas de trabajo durante pruebas de ergoespirometría.
 
@@ -45,4 +45,4 @@ Esta es una **Aplicación Web Progresiva (PWA)** diseñada para especialistas en
 **📸 Previsualización**
 La aplicación cuenta con un diseño optimizado para dispositivos móviles, asegurando que los inputs y tablas de historial sean legibles en cualquier pantalla.
 
-Creado y desarrollado por CesarJam94 para LIONESSS ACADEMY.
+Creado y desarrollado por CesarJam94 para LIONSSS ACADEMY.
